@@ -1,11 +1,9 @@
 <?php
 require 'config.php';
+require 'dao/UsuarioDaoMysql.php';
 
-$lista = [];
-$sql = $pdo->query("SELECT * FROM usuarios");
-if ($sql->rowCount() > 0) {
-    $lista = $sql->fetchAll(PDO::FETCH_ASSOC);
-}
+$usuarioDao = new UsuarioDaoMysql($pdo);
+$lista = $usuarioDao->findAll();
 ?>
 <a href="adicionar.php">Adicionar</a>
 <table border="1" width="100%">
@@ -17,12 +15,12 @@ if ($sql->rowCount() > 0) {
     </tr>
     <?php foreach ($lista as $usuario): ?>
         <tr>
-            <td><?=$usuario['id'];?></td>
-            <td><?=$usuario['name'];?></td>
-            <td><?=$usuario['email'];?></td>
+            <td><?=$usuario->getId();?></td>
+            <td><?=$usuario->getName();?></td>
+            <td><?=$usuario->getEmail();?></td>
             <td>
-                <a href="editar.php?id=<?=$usuario['id'];?>">[ Editar ]</a>
-                <a href="excluir.php?id=<?=$usuario['id'];?>" onclick="return confirm('Tem certeza que deseja excluir?')">[ Excluir ]</a>
+                <a href="editar.php?id=<?=$usuario->getId();?>">[ Editar ]</a>
+                <a href="excluir.php?id=<?=$usuario->getId();?>" onclick="return confirm('Tem certeza que deseja excluir?')">[ Excluir ]</a>
             </td>
         </tr>
     <?php endforeach; ?>
